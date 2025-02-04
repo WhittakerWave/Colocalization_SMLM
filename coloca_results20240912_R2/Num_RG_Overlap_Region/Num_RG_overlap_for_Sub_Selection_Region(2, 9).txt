@@ -1,0 +1,15 @@
+num_R in the subregion: 20
+num_G in the subregion: 9
+Effective Area: 1.0095417351811193
+Density of R: 19.810968980308527
+Density of G: 8.914936041138837
+Pair Exp Initial Found: 0.0
+Number of MC Steps: 25
+Number of MC in each step: 10
+Monte Carlo History: [1. 3. 3. 4. 3. 2. 3. 3. 3. 4. 4. 4. 3. 3. 4. 4. 3. 3. 3. 3. 4. 5. 4. 3.
+ 4.]
+True Pair Estimate: [-1. -3. -3. -4. -3. -2. -3. -3. -3. -4. -4. -4. -3. -3. -4. -4. -3. -3.
+ -3. -3. -4. -5. -4. -3. -4.]
+Number of MC Points in est prob: 100000
+True Distance Threshold/nm: 20.0
+Distance Tree Threshold Factor: 4

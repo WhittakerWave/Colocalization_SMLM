@@ -1,0 +1,14 @@
+Mean SNR: 82.16924168548364
+R precision lower/nm: 5
+R precision upper/nm: 40
+G precision lower/nm: 5
+G precision upper/nm: 40
+R PSF Lower/nm: 80
+R PSF Upper/nm: 220
+G PSF Lower/nm: 80
+G PSF Upper/nm: 220
+Overcount Threshold/um: 0
+R number before filtering: 1981
+G number before filtering: 1292
+R number after filtering: 1981
+G number after filtering: 1292

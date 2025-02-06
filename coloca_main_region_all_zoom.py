@@ -1,8 +1,7 @@
 
 #################################################################################################################################
 #################################################################################################################################
-##### Main function for Colocalization Analysis for HALO-TM-SNAP data
-##### which considers to incorporate the precision of two emitters
+##### Main function for Colocalization Analysis
 from package_func import *
 from filter_pre import *
 from coloca_func import *
@@ -14,26 +13,30 @@ from region_select import *
 from delete_cluster import *
 
 #################################################################################################################################
-## One type of experimental data: Control Data (HALO_TM_SNAP)
-## Experimental Data 20230502
-## Maximum frame: 
-## 1: Frame (0) 2: X/nm (1) 3: Y/nm (2) 4:PSF half width (3) 5: Number of Photons (4)
-## 8: Precision/nm (5)
-Filedate = '20240912_R2'
+## Experimental data
+## 1: Frame (0) 2: X/nm (1) 3: Y/nm (2) 4:PSF half width (3) 5: Number of Photons (4) 8: Precision/nm (5)
+Filedate = '20250206'
+# Define directory names
+output_basic_info_dir = f'output_basic_info{Filedate}'
+coloca_results_dir = f'coloca_results{Filedate}'
+# Create directories
+os.makedirs(output_basic_info_dir, exist_ok=True)
+os.makedirs(coloca_results_dir, exist_ok=True)
+
+
 Cell =  '20231102_Image3'
 # path0 = '/Users/xcyan/Desktop/SSA/20230521_Images/Halo-TM-SNAP_100nm_beads/Image 4 Table.txt'
 # path0 = '/Volumes/prigozhin_lab/Users/asrinivasan/Elyra_Imaging/20230109/DeltaS_2C_Halo_TM_SNAP/Image2_loc_table.txt'
-path0 =  '20231102_B2CAAX_Image 3_dc_filtered_grp.txt'
-# path1 = '/Volumes/prigozhin_lab/Users/xyan/Elyra_Imaging/20230310/Halo549_B2AR_Gs_SNAP646/20230310_Image1/20230310_image1_emitter_increment.txt'
-# path2 = '/Users/xcyan/Desktop/SSA2/Colocalization_Analysis/20230109_TM_image2_C1'
+path1 =  '20231102_B2CAAX_Image 3_dc_filtered_grp.txt'
 path2 = os.getcwd()
-data = pd.read_csv(path0, sep='\t', encoding= 'unicode_escape').values[0:3273]                                                                                                                                                                                                       
+data = pd.read_csv(path1, sep='\t', encoding= 'unicode_escape').values                                                                                                                                                                                                     
 ## Filter Precision < 50 nm to use and Change the distance unit from nm to um
 min_frame_use = 0
 max_frame_use = 10000
+max_prec_use = 50
 frame_len = max(data[:,1])
-R_data = data[(data[:,11]==1) & (data[:,1] >= min_frame_use) & (data[:,1]<= max_frame_use) & (data[:,6]<= 50)].astype(float)
-G_data = data[(data[:,11]==2) & (data[:,1] >= min_frame_use) & (data[:,1]<= max_frame_use) & (data[:,6]<= 50)].astype(float)
+R_data = data[(data[:,11]==1) & (data[:,1] >= min_frame_use) & (data[:,1]<= max_frame_use) & (data[:,6]<= max_prec_use )].astype(float)
+G_data = data[(data[:,11]==2) & (data[:,1] >= min_frame_use) & (data[:,1]<= max_frame_use) & (data[:,6]<= max_prec_use )].astype(float)
 R_pos = R_data[:,4:6]/1000
 G_pos = G_data[:,4:6]/1000
 ## Frame Number; Min precision: 7nm/7nm; Max precision: 35nm/45nm
@@ -48,8 +51,11 @@ pixel_size = 96.78
 ##### data[:,7]: Number of photon, data[:,10]: PSF half width, data[:,8]: Background Variance
 mean_SNR = SNR_nonzero(data[:,7], data[:,10], data[:,8], pixel_size)
 
+## Usually False
 Filter_Operation = True
+## Usually False
 Drift_Operation = False
+
 Selection_Number = 0
 Delete_Cluster = True
 Subregion_Operation = True
@@ -187,6 +193,7 @@ for i in range(num_rows):
             density_R_regions[i,j] = num_R_regions[i,j] / intersect_area[i,j]
             density_G_regions[i,j] = num_G_regions[i,j] / intersect_area[i,j]
 
+######### Areas subregions
 with open(os.path.join(path2, f'coloca_results{Filedate}/Area_subregions.txt'), 'w') as f:
     for row in intersect_area:
         f.write(' '.join(str(elem) for elem in row))

@@ -25,11 +25,7 @@ import math
 from scipy.stats import pearsonr, spearmanr
 import scipy
 from publish_format import useLargeSize
-
-
-import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
-import matplotlib
 #matplotlib.use('TkAgg')
 
 

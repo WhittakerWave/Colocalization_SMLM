@@ -1,5 +1,0 @@
-R original number: 1874
-G original number: 1192
-area: 79.08671395498806
-select_R_number: 153
-select_G_number: 76

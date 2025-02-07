@@ -51,16 +51,16 @@ pixel_size = 96.78
 ##### data[:,7]: Number of photon, data[:,10]: PSF half width, data[:,8]: Background Variance
 mean_SNR = SNR_nonzero(data[:,7], data[:,10], data[:,8], pixel_size)
 
-## Usually False
-Filter_Operation = True
-## Usually False
+## Whether to filter data based precision, psd, et al, usually False
+Filter_Operation = False
+## Whether to do drift correlation, psd, et al, usually False
 Drift_Operation = False
 
 Selection_Number = 0
 Delete_Cluster = True
 Subregion_Operation = True
-num_rows = 10
-num_cols = 10
+num_rows = 1
+num_cols = 1
 matrix_size = num_rows*num_cols 
 
 #################################################################################################################################
@@ -108,7 +108,6 @@ else:
     R_pos_driftcorr, G_pos_driftcorr, R_prec_driftcorr, G_prec_driftcorr, R_psf_driftcorr, G_psf_driftcorr, R_frame_driftcorr, G_frame_driftcorr = \
         load_files_filter(Cell, path = path2 + f'/output_basic_info{Filedate}/')
     
-
 '''
 # create a SelectPoints object and show the plot
 width = 3
@@ -120,6 +119,10 @@ G_select_index = rs.select_indices_G
 save_files_subregion(Cell, R_select_index, G_select_index,  R_pos_driftcorr, G_pos_driftcorr, R_prec_driftcorr, G_prec_driftcorr, \
         R_psf_driftcorr, G_psf_driftcorr, R_frame_driftcorr, G_frame_driftcorr, path = path2 + f'/output_basic_info{Filedate}/Subregion_Selection/')
 '''
+
+
+#################################################################################################################################
+### Delete cluster 
 
 # Combine R_frame, R_pos, R_prec, R_psf into R_data
 R_data_combine = np.column_stack((R_frame_driftcorr, R_pos_driftcorr, R_prec_driftcorr, R_psf_driftcorr))
@@ -149,7 +152,7 @@ if Subregion_Operation ==True:
             filedate = Filedate, path_save = os.path.join(path2, f'output_basic_info{Filedate}/Whole_Cell_Region'), \
            num_rows = num_rows, num_cols = num_cols, vertices = None)
 else:
-    ##### Loaded the saved selected regions fikes
+    ##### Loaded the saved selected regions files
     # path3 = os.path.join(path2, f'output_basic_info{Filedate}/Whole_Cell_Region/')
     # R_points_intersect_index = np.load(path3 + f'R_second_select_idx_region_cell{Cell}.npy', allow_pickle=True)
     # G_points_intersect_index = np.load(path3 + f'G_second_select_idx_region_cell{Cell}.npy', allow_pickle=True)
@@ -160,6 +163,9 @@ else:
         area_select_subregions(R_pos_delete, G_pos_delete, indicator = "prev", cell = Cell, \
             filedate = Filedate, path_save = os.path.join(path2, f'output_basic_info{Filedate}/Whole_Cell_Region'), \
            num_rows = num_rows, num_cols = num_cols, vertices = vertices_prev)
+
+################################################################################################################################
+####  Anlysis region by region 
 
 ####  local_density_analysis(R_select_filter, G_select_filter, R_points_region, G_points_region, intersect_area, area_filter, cell = Cell, filedate = Filedate, path_save = path1)
 pairs_region_initial = np.zeros([num_rows, num_cols]) 
@@ -231,6 +237,7 @@ for i in range(matrix_size):
 
 for i in range(num_rows):
     for j in range(num_cols):
+        ### if the intersection area is non-negative 
         if intersect_area[i,j] > 0:
             R_index = R_points_intersect_index[i, j]
             G_index = G_points_intersect_index[i, j]
@@ -296,7 +303,7 @@ for i in range(num_rows):
         for row in pairs_region_true:
             f.write(' '.join(str(elem) for elem in row))
             f.write('\n')
-    # Now, you can write the matrix to a file
+    # Write the matrix to a file
     with open(os.path.join(path2, f'coloca_results{Filedate}/Method.txt'), 'w') as f:
         for row in matrix_indicator:
             # Convert the row to a string and write it to the file

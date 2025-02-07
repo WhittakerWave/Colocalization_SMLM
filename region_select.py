@@ -1,11 +1,13 @@
 
 from package_func import *
-#matplotlib.use('TkAgg')
+
+
 
 ### Colors 
 b2AR_color = tuple(c/255 for c in [0, 176, 80])
 Gs_color = tuple(c/255 for c in [255, 0, 255])
 complex_color = tuple(c/255 for c in [63, 83, 135])
+
 
 class RegionSelector:
     def __init__(self, data, indicator=None, cellname=None):

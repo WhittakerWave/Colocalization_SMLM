@@ -27,5 +27,3 @@ import scipy
 from publish_format import useLargeSize
 from matplotlib.patches import Rectangle
 #matplotlib.use('TkAgg')
-
-

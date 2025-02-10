@@ -52,15 +52,15 @@ pixel_size = 96.78
 mean_SNR = SNR_nonzero(data[:,7], data[:,10], data[:,8], pixel_size)
 
 ## Whether to filter data based precision, psd, et al, usually False
-Filter_Operation = False
+Filter_Operation = True
 ## Whether to do drift correlation, psd, et al, usually False
 Drift_Operation = False
 
 Selection_Number = 0
 Delete_Cluster = True
 Subregion_Operation = True
-num_rows = 1
-num_cols = 1
+num_rows = 5
+num_cols = 5
 matrix_size = num_rows*num_cols 
 
 #################################################################################################################################
@@ -144,8 +144,7 @@ else:
 #################################################################################################################################
 ########## Second Part: Cololization Analysis
 ########## Make sure to have the correct input
-
-if Subregion_Operation ==True:
+if Subregion_Operation == True:
     R_select, G_select, area_select, R_points_region, G_points_region, intersect_area, \
         R_points_intersect_index, G_points_intersect_index = \
         area_select_subregions(R_pos_delete, G_pos_delete, indicator = "exp", cell = Cell, \

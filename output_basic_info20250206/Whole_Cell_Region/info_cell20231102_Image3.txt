@@ -1,0 +1,5 @@
+R original number: 1874
+G original number: 1192
+area: 198.06516764329845
+select_R_number: 333
+select_G_number: 236
